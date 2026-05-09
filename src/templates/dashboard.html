@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Dashboard</h1>
+
+<div class="grid-3">
+    <div class="card stat">
+        <div class="num">{{ total_sitios }}</div>
+        <div class="label">Sitios monitoreados</div>
+    </div>
+    <div class="card stat">
+        <div class="num">{{ productos|length }}</div>
+        <div class="label">Productos rastreados</div>
+    </div>
+    <div class="card stat">
+        <div class="num">
+            {% set disponibles = productos|selectattr('disponible', 'equalto', True)|list %}
+            {{ disponibles|length }}
+        </div>
+        <div class="label">Disponibles</div>
+    </div>
+</div>
+
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2 style="margin:0; color:#f1f5f9;">Últimos Precios</h2>
+        <div class="actions" style="margin:0;">
+            <a href="/descargar" class="btn btn-outline">📥 Descargar Excel</a>
+            <form method="POST" action="/scrapear" style="display:inline;">
+                <button class="btn btn-blue">🔄 Scrapear Ahora</button>
+            </form>
+        </div>
+    </div>
+
+    {% if productos %}
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Tienda</th>
+                <th>Precio</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in productos %}
+            <tr>
+                <td>{{ p.nombre[:60] }}</td>
+                <td>{{ p.tienda }}</td>
+                <td class="precio">${{ "{:,.2f}".format(p.precio) }}</td>
+                <td>
+                    {% if p.disponible %}
+                    <span class="badge badge-green">Disponible</span>
+                    {% else %}
+                    <span class="badge badge-red">Agotado</span>
+                    {% endif %}
+                </td>
+                <td style="color:#64748b;">{{ p.fecha[:19] if p.fecha else '-' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty">
+        <p>📭 No hay productos rastreados aún</p>
+        <p style="margin-top:0.5rem;">Agrega sitios y haz un scrapeo para empezar</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

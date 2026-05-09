@@ -8,3 +8,7 @@ pydantic
 httpx
 beautifulsoup4
 lxml
+fastapi
+uvicorn
+jinja2
+python-multipart

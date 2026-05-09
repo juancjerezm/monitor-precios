@@ -6,8 +6,11 @@ __pycache__/
 *.egg-info/
 dist/
 
-# Reportes generados
+# Reportes generados y locks
 *.xlsx
+*.xlsx#
+~$*.xlsx
+sitios.json
 
 # OS
 .DS_Store

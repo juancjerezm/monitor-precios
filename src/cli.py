@@ -1,6 +1,8 @@
 import asyncio
+import webbrowser
 from pathlib import Path
 import typer
+import uvicorn
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
@@ -82,6 +84,20 @@ def nuevo_sitio(
     )
     rprint(f"[green]✅ Sitio agregado: {sitio.nombre}[/green]")
     rprint(sitio.model_dump_json(indent=2))
+
+
+@app.command()
+def web(port: int = 8000):
+    """Inicia la interfaz web en el navegador."""
+    console.print(
+        Panel.fit(
+            "[bold blue]🌐 Monitor de Precios[/bold blue]\n"
+            f"Abriendo http://localhost:{port} ...",
+            border_style="blue",
+        )
+    )
+    webbrowser.open(f"http://localhost:{port}")
+    uvicorn.run("src.web:app", host="0.0.0.0", port=port, reload=True)
 
 
 def main():

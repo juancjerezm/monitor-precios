@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Mis Sitios</h1>
+
+<div class="card">
+    <h2 style="color:#f1f5f9; margin-bottom:1rem;">Agregar nuevo sitio</h2>
+    <form method="POST" action="/sitios">
+        <label>Nombre de la tienda</label>
+        <input type="text" name="nombre" placeholder="Ej: MercadoLibre" required>
+
+        <label>URL del producto</label>
+        <input type="url" name="url" placeholder="https://..." required>
+
+        <label>Selector CSS del nombre</label>
+        <input type="text" name="selector_nombre" placeholder="h1.product-title" required>
+
+        <label>Selector CSS del precio</label>
+        <input type="text" name="selector_precio" placeholder=".price-tag span" required>
+
+        <div class="actions">
+            <button type="submit" class="btn btn-green">+ Agregar Sitio</button>
+        </div>
+    </form>
+</div>
+
+<div class="card" style="margin-top: 1rem;">
+    <h2 style="color:#f1f5f9; margin-bottom:1rem;">
+        Sitios configurados
+        <span style="color:#64748b; font-weight:400;">({{ sitios|length }})</span>
+    </h2>
+
+    {% if sitios %}
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>URL</th>
+                <th>Selector Nombre</th>
+                <th>Selector Precio</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in sitios %}
+            <tr>
+                <td style="color:#64748b;">{{ loop.index0 + 1 }}</td>
+                <td>{{ s.nombre }}</td>
+                <td style="color:#38bdf8; max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                    {{ s.url }}
+                </td>
+                <td><code style="background:#0f172a; padding:2px 6px; border-radius:4px;">{{ s.selector_nombre }}</code></td>
+                <td><code style="background:#0f172a; padding:2px 6px; border-radius:4px;">{{ s.selector_precio }}</code></td>
+                <td>
+                    <form method="POST" action="/sitios/{{ loop.index0 }}/eliminar" style="display:inline;">
+                        <button class="btn btn-red" style="padding:0.3rem 0.7rem;font-size:0.8rem;">✕</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty">
+        <p>📭 No hay sitios configurados</p>
+        <p style="margin-top:0.5rem;">Usa el formulario de arriba para agregar tu primer sitio</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
