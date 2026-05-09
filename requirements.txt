@@ -1,0 +1,10 @@
+playwright
+pandas
+openpyxl
+xlsxwriter
+typer
+rich
+pydantic
+httpx
+beautifulsoup4
+lxml

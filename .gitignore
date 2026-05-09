@@ -1,0 +1,14 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+
+# Reportes generados
+*.xlsx
+
+# OS
+.DS_Store
+Thumbs.db
